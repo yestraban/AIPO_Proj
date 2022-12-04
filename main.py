@@ -1,12 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-import copy
-import statistics
-import skimage
-import skimage.morphology as morph
 
-from tkinter import Tk
 from tkinter import filedialog
 from tkinter import *
 
@@ -43,10 +38,9 @@ if __name__ == '__main__':
     plt.imshow(img1)
 
     def onclick(event):
-        #global ix, iy
         ix, iy = int(event.xdata), int(event.ydata)
         print('x = %d, y = %d' % (ix, iy))
-        #ix = int(ix)
+
         print(img1[iy, ix])
         lower = np.array(img2[iy, ix]-[20, 50, 50])
         upper = np.array(img2[iy, ix]+[20, 50, 50])
@@ -55,10 +49,8 @@ if __name__ == '__main__':
 
         color = np.array([[img1[iy, ix] for y in range(500)] for x in range(500)])
 
-        # lower_blue = np.array([100, 50, 50])
-        # upper_blue = np.array([140, 255, 255])
-        # Threshold the HSV image to get only blue colors
         mask = cv2.inRange(img2, lower, upper)
+
         # Bitwise-AND mask and original image
         res = cv2.bitwise_and(img2, img2, mask=mask)
         res = cv2.cvtColor(res, cv2.COLOR_HSV2RGB)
@@ -73,24 +65,5 @@ if __name__ == '__main__':
         if len(coords) == 2:
             f.canvas.mpl_disconnect(cid)
 
-
     cid = f.canvas.mpl_connect('button_press_event', onclick)
     plt.show()
-
-    # lower_blue = np.array([100, 50, 50])
-    # upper_blue = np.array([140, 255, 255])
-    # # Threshold the HSV image to get only blue colors
-    # mask = cv2.inRange(img2, lower_blue, upper_blue)
-    #
-    # # Bitwise-AND mask and original image
-    # res = cv2.bitwise_and(img2, img2, mask=mask)
-    # res = cv2.cvtColor(res, cv2.COLOR_HSV2RGB)
-
-
-    # f.add_subplot(131)
-    # plt.imshow(img2)
-    # f.add_subplot(132)
-    # plt.imshow(mask)
-    # f.add_subplot(133)
-    # plt.imshow(res)
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

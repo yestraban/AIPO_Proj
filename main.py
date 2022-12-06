@@ -7,7 +7,6 @@ from tkinter import *
 
 
 def get_file():
-    # Use a breakpoint in the code line below to debug your script.
     root = Tk()
     root.filename = filedialog.askopenfilename(initialdir="/", title="Select file",
                                                filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
@@ -32,10 +31,24 @@ if __name__ == '__main__':
     img1 = cv2.cvtColor(cv2.imread(image_path, 1), cv2.COLOR_BGR2RGB)
     img2 = cv2.cvtColor(cv2.imread(image_path, 1), cv2.COLOR_BGR2HSV)
 
+    im1_blue = np.array([0 for col in range(256)])
+    im1_red = np.array([0 for col in range(256)])
+    im1_green = np.array([0 for col in range(256)])
+    height1, width1 = img1.shape[:2]
+    for x in range(height1):
+        for y in range(width1):
+            im1_red[img1[x, y, 0]] += 1
+            im1_green[img1[x, y, 1]] += 1
+            im1_blue[img1[x, y, 2]] += 1
+
     coords = []
     f = plt.figure()
-    f.add_subplot(111)
+    f.add_subplot(121)
     plt.imshow(img1)
+    f.add_subplot(122)
+    plt.plot(im1_red, color='red')
+    plt.plot(im1_blue, color='blue')
+    plt.plot(im1_green, color='green')
 
     def onclick(event):
         ix, iy = int(event.xdata), int(event.ydata)
